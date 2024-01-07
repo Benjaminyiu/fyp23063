@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choose Stock</title>
+</head>
+<body>
+    <h1>Choose Stock for {{ category }}/{{ subcategory }}</h1>
+    <form action="/candlestick" method="POST">
+        <input type="hidden" name="category" value="{{ category }}">
+        <input type="hidden" name="subcategory" value="{{ subcategory }}">
+        <select name="stock">
+            {% for stock in stocks %}
+            <option value="{{ stock }}">{{ stock }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Plot">
+    </form>
+</body>
+</html>

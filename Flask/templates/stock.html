@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Stock</title>
+</head>
+
+<body>
+    {% if labels and data %}
+
+    <form method="POST" action="/stock">
+      <label for="start_date">Start Date:</label>
+      <input type="date" id="start_date" name="start_date" required>
+      <br><br>
+      <label for="end_date">End Date:</label>
+      <input type="date" id="end_date" name="end_date" required>
+      <br><br>
+      <input type="submit" value="Plot">
+    </form>
+
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="stock"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ labels | tojson }};
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Close Price',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ data | tojson }},
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: { 
+              maintainAspectRatio: false ,
+              spanGaps: true , // enable for all datasets
+              elements: {
+                point: {
+                    radius: 0 // default to disabled in all datasets
+                }
+            }
+            }
+        };
+
+        const myChart = new Chart(
+            document.getElementById('stock'),
+            config
+        );
+    </script>
+
+    {% else %}
+    <form method="POST" action="/stock">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <br><br>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <br><br>
+        <input type="submit" value="Plot">
+    </form>
+    {% endif %}
+</body>
+
+</html>

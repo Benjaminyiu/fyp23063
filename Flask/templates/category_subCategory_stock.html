@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candlestick Chart</title>
+</head>
+<body>
+    <h1>Candlestick Chart</h1>
+    
+    {% if not category and not subcategory and not stock %}
+    <h1>Choose Category</h1>
+    <form action="/subcategories" method="POST">
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Next">
+    </form>
+    {% endif %}
+    
+    {% if category and not subcategory and not stock %}
+    <h1>Choose a sub-category for {{ category }}.</h1>
+    <form action="/stocks" method="POST">
+        <input type="hidden" name="category" value="{{ category }}">
+        <select name="subcategory">
+            {% for subcategory in subcategories %}
+            <option value="{{ subcategory }}">{{ subcategory }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Next">
+    </form>
+    {% endif %}
+    
+    {% if category and subcategory and not stock %}
+    <h1>Choose Stock for {{ category }}/{{ subcategory }}</h1>
+    <form action="/candlestick" method="POST">
+        <input type="hidden" name="category" value="{{ category }}">
+        <input type="hidden" name="subcategory" value="{{ subcategory }}">
+        <select name="stock">
+            {% for stock in stocks %}
+            <option value="{{ stock }}">{{ stock }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Plot">
+    </form>
+    {% endif %}
+</body>
+</html>
