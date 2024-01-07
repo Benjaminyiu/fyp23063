@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candlestick Graph</title>
+    <!-- Include Highcharts library -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/stock.js"></script>
+</head>
+<body>
+    <h1><h1>Candlestick Graph for {{ stock }}</h1></h1>
+    
+    <div id="chart-container"></div>
+    
+    <script>
+        // Parse data from Flask
+        var data = [
+            {% for row in data %}
+            [
+                Date.parse('{{ row.Date }}'),
+                {{ row.Open }},
+                {{ row.High }},
+                {{ row.Low }},
+                {{ row.Close }},
+                {{ row.Volume }}
+            ],
+            {% endfor %}
+        ];
+        
+        // Create Highcharts chart
+        Highcharts.stockChart('chart-container', {
+            plotOptions: {
+                candlestick: {
+                    color: 'green', // color of the bullish candles
+                    lineColor: 'green', // color of the lines of the bullish candles
+                    upColor: 'red', // color of the bearish candles
+                    upLineColor: 'red' // color of the lines of the bearish candles
+                }
+            },
+            rangeSelector: {
+                selected: 1
+            },
+            title: {
+                text: '{{ stock }}'
+            },
+            
+            series: [{
+                type: 'candlestick',
+                name: 'Candlestick Data',
+                data: data 
+            }]
+            
+        });
+    </script>
+</body>
+</html>
